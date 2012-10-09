@@ -72,5 +72,8 @@ public class AccPersonalise {
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
 	}
-
+	
+	public String toString() {
+		return "AccPersanlise("+ nom +")";
+	}
 }
