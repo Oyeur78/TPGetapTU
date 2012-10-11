@@ -81,6 +81,11 @@ public class DemandeValidationConsoTempsAccPers {
 		this.eleve = eleve;
 		this.etat = etat;
 	}
+	
+	public DemandeValidationConsoTempsAccPers(Long id, String anneeScolaire, Date date,
+			Integer minutes, User prof, AccPersonalise accPers, User eleve) {
+		this(id,anneeScolaire,date,minutes,prof,accPers,eleve,0);
+	}
 
 	public Long getId() {
 		return id;
@@ -165,6 +170,20 @@ public class DemandeValidationConsoTempsAccPers {
 	 *            modifiée par le professeur</li>
 	 *            </ul>
 	 */
+	private static final int DVCTAP_CREER = 0;
+	private static final int DVCTAP_ACCEPTERMOFPROF = 1;
+	
+	private static final int DVCTAP_REJETEE = 2;
+	boolean rejete = (this.etat & DVCTAP_REJETEE) == DVCTAP_REJETEE;
+	
+	private static final int DVCTAP_MODELEVE = 4;
+	private static final int DVCTAP_ANNULE = 8;
+	private static final int DVCTAP_VALPROF = 32;
+	private static final int DVCTAP_REFUSE= 64;
+	private static final int DVCTAP_DATEMOD = 1024;
+	private static final int DVCTAP_DUREEMOD = 2048;
+	private static final int DVCTAP_ACCPERSMOD = 4096;
+	
 	public void setEtat(int etat) {
 		this.etat = etat;
 	}
@@ -176,6 +195,86 @@ public class DemandeValidationConsoTempsAccPers {
 				+ anneeScolaire + ", dateAction=" + dateAction + ", minutes="
 				+ minutes + ", prof=" + prof + ", accPers=" + accPers
 				+ ", eleve=" + eleve + ", etat=" + etat + "]";
+	}
+
+	public boolean isEtatInitial() {
+		if (etat==0){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatAccepteEleveApresModif() {
+		if (etat==1){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatRejeterEleveApresModif() {
+		if (etat==2){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatModifierEleve() {
+		if (etat==4){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatAnnulerEleve() {
+		if (etat==8){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatValiderProf() {
+		if (etat==32){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatRefuserProf() {
+		if (etat==64){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatDemandeModifierDateProf() {
+		if (etat==1024){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatDemandeDureeModifierProf() {
+		if (etat==2048){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isEtatDemandeAccPersModifierProf() {
+		if (etat==4096){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isChangeRefus(){
+		if (this.etat == 0 ){
+			if(rejete != true) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 }
