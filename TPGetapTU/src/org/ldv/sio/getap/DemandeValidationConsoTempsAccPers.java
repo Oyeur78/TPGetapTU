@@ -170,12 +170,10 @@ public class DemandeValidationConsoTempsAccPers {
 	 *            modifiée par le professeur</li>
 	 *            </ul>
 	 */
+	
 	private static final int DVCTAP_CREER = 0;
 	private static final int DVCTAP_ACCEPTERMOFPROF = 1;
-	
 	private static final int DVCTAP_REJETEE = 2;
-	boolean rejete = (this.etat & DVCTAP_REJETEE) == DVCTAP_REJETEE;
-	
 	private static final int DVCTAP_MODELEVE = 4;
 	private static final int DVCTAP_ANNULE = 8;
 	private static final int DVCTAP_VALPROF = 32;
@@ -205,76 +203,50 @@ public class DemandeValidationConsoTempsAccPers {
 	}
 	
 	public boolean isEtatAccepteEleveApresModif() {
-		if (etat==1){
-			return true;
-		}
-		return false;
+		boolean acccepter = (this.etat & DVCTAP_ACCEPTERMOFPROF) != 0;
+		return acccepter;
 	}
 	
 	public boolean isEtatRejeterEleveApresModif() {
-		if (etat==2){
-			return true;
-		}
-		return false;
+		boolean rejeter = (this.etat & DVCTAP_REJETEE) != 0;
+		return rejeter;
 	}
 	
 	public boolean isEtatModifierEleve() {
-		if (etat==4){
-			return true;
-		}
-		return false;
+		boolean modifierEleve = (this.etat & DVCTAP_MODELEVE) != 0;
+		return modifierEleve;
 	}
 	
 	public boolean isEtatAnnulerEleve() {
-		if (etat==8){
-			return true;
-		}
-		return false;
+		boolean annulEleve = (this.etat & DVCTAP_ANNULE) != 0;
+		return annulEleve;
 	}
 	
 	public boolean isEtatValiderProf() {
-		if (etat==32){
-			return true;
-		}
-		return false;
+		boolean validationProf = (this.etat & DVCTAP_VALPROF) != 0;
+		return validationProf;
 	}
 	
 	public boolean isEtatRefuserProf() {
-		if (etat==64){
-			return true;
-		}
-		return false;
+		boolean refuserProf = (this.etat & DVCTAP_REFUSE) != 0;
+		return refuserProf;
 	}
 	
 	public boolean isEtatDemandeModifierDateProf() {
-		if (etat==1024){
-			return true;
-		}
-		return false;
+		boolean modfiDateProf = (this.etat & DVCTAP_DATEMOD) != 0;
+		return modfiDateProf;
 	}
 	
 	public boolean isEtatDemandeDureeModifierProf() {
-		if (etat==2048){
-			return true;
-		}
-		return false;
+		boolean modifDureProf = (this.etat & DVCTAP_DUREEMOD) != 0;
+		return modifDureProf;
 	}
 	
 	public boolean isEtatDemandeAccPersModifierProf() {
-		if (etat==4096){
-			return true;
-		}
-		return false;
+		boolean modifAccPers = (this.etat & DVCTAP_ACCEPTERMOFPROF) != 0;
+		return modifAccPers;
 	}
 	
-	public boolean isChangeRefus(){
-		if (this.etat == 0 ){
-			if(rejete != true) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
+
 
 }
