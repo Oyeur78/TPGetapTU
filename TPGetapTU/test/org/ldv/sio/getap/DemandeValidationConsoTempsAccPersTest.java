@@ -35,6 +35,16 @@ public class DemandeValidationConsoTempsAccPersTest extends TestCase{
 	}
 	
 	public void testChangeEtat() {
-		assertTrue("Etat initial", dvctap.isEtatInitial());
+		try{
+//			dvctap.modifieeParEleve();
+//			dvctap.modifieeParEleve();
+			dvctap.modifieeDateParLeProfesseur();
+			dvctap.modifieeDureeParLeProfesseur();
+			System.out.println(dvctap);
+			dvctap.accepteeParEleve();
+		}catch(DVCTAPException e){
+			fail("Erreur");
+		}
 	}
 }
+

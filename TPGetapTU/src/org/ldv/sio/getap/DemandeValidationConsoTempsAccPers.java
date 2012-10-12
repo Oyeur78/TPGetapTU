@@ -58,19 +58,20 @@ public class DemandeValidationConsoTempsAccPers {
 	/**
 	 * Constructeur permettant de créer une demande complète.
 	 * 
-	 * @param id peut être null (moment de la creation)
-	 *            
+	 * @param id
+	 *            peut être null (moment de la creation)
+	 * 
 	 * @param anneeScolaire
 	 * @param date
 	 * @param minutes
 	 * @param prof
 	 * @param accPers
-	 * @param eleve 
+	 * @param eleve
 	 * @param etat
 	 */
-	public DemandeValidationConsoTempsAccPers(Long id, String anneeScolaire, Date date,
-			Integer minutes, User prof, AccPersonalise accPers, User eleve,
-			int etat) {
+	public DemandeValidationConsoTempsAccPers(Long id, String anneeScolaire,
+			Date date, Integer minutes, User prof, AccPersonalise accPers,
+			User eleve, int etat) {
 		super();
 		this.id = id;
 		this.anneeScolaire = anneeScolaire;
@@ -81,10 +82,11 @@ public class DemandeValidationConsoTempsAccPers {
 		this.eleve = eleve;
 		this.etat = etat;
 	}
-	
-	public DemandeValidationConsoTempsAccPers(Long id, String anneeScolaire, Date date,
-			Integer minutes, User prof, AccPersonalise accPers, User eleve) {
-		this(id,anneeScolaire,date,minutes,prof,accPers,eleve,0);
+
+	public DemandeValidationConsoTempsAccPers(Long id, String anneeScolaire,
+			Date date, Integer minutes, User prof, AccPersonalise accPers,
+			User eleve) {
+		this(id, anneeScolaire, date, minutes, prof, accPers, eleve, 0);
 	}
 
 	public Long getId() {
@@ -170,23 +172,22 @@ public class DemandeValidationConsoTempsAccPers {
 	 *            modifiée par le professeur</li>
 	 *            </ul>
 	 */
-	
+
 	private static final int DVCTAP_CREER = 0;
 	private static final int DVCTAP_ACCEPTERMOFPROF = 1;
 	private static final int DVCTAP_REJETEE = 2;
 	private static final int DVCTAP_MODELEVE = 4;
 	private static final int DVCTAP_ANNULE = 8;
 	private static final int DVCTAP_VALPROF = 32;
-	private static final int DVCTAP_REFUSE= 64;
+	private static final int DVCTAP_REFUSE = 64;
 	private static final int DVCTAP_DATEMOD = 1024;
 	private static final int DVCTAP_DUREEMOD = 2048;
 	private static final int DVCTAP_ACCPERSMOD = 4096;
-	
+
 	public void setEtat(int etat) {
 		this.etat = etat;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "DemandeConsoTempsAccPers [id=" + id + ", anneeScolaire="
@@ -196,57 +197,180 @@ public class DemandeValidationConsoTempsAccPers {
 	}
 
 	public boolean isEtatInitial() {
-		if (etat==0){
+		if (etat == 0) {
 			return true;
 		}
 		return false;
 	}
-	
+
+	public boolean isCreeEleve() {
+		boolean cree = (this.etat & DVCTAP_CREER) != 0;
+		return cree;
+	}
+
 	public boolean isEtatAccepteEleveApresModif() {
 		boolean acccepter = (this.etat & DVCTAP_ACCEPTERMOFPROF) != 0;
 		return acccepter;
 	}
-	
+
 	public boolean isEtatRejeterEleveApresModif() {
 		boolean rejeter = (this.etat & DVCTAP_REJETEE) != 0;
 		return rejeter;
 	}
-	
+
 	public boolean isEtatModifierEleve() {
 		boolean modifierEleve = (this.etat & DVCTAP_MODELEVE) != 0;
 		return modifierEleve;
 	}
-	
+
 	public boolean isEtatAnnulerEleve() {
 		boolean annulEleve = (this.etat & DVCTAP_ANNULE) != 0;
 		return annulEleve;
 	}
-	
+
 	public boolean isEtatValiderProf() {
 		boolean validationProf = (this.etat & DVCTAP_VALPROF) != 0;
 		return validationProf;
 	}
-	
+
 	public boolean isEtatRefuserProf() {
 		boolean refuserProf = (this.etat & DVCTAP_REFUSE) != 0;
 		return refuserProf;
 	}
-	
-	public boolean isEtatDemandeModifierDateProf() {
+
+	public boolean isEtatModifierDateProf() {
 		boolean modfiDateProf = (this.etat & DVCTAP_DATEMOD) != 0;
 		return modfiDateProf;
 	}
-	
-	public boolean isEtatDemandeDureeModifierProf() {
+
+	public boolean isEtatDureeModifierProf() {
 		boolean modifDureProf = (this.etat & DVCTAP_DUREEMOD) != 0;
 		return modifDureProf;
 	}
-	
-	public boolean isEtatDemandeAccPersModifierProf() {
+
+	public boolean isEtatAccPersModifierProf() {
 		boolean modifAccPers = (this.etat & DVCTAP_ACCEPTERMOFPROF) != 0;
 		return modifAccPers;
 	}
-	
 
 
+	public void valideeParLeProfesseur() throws DVCTAPException {
+		if (!this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatValiderProf()) {
+			this.etat = this.etat | DVCTAP_VALPROF;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void refuseeParLeProfesseur() throws DVCTAPException {
+		if (!this.isEtatAnnulerEleve() && !this.isEtatValiderProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatRefuserProf()) {
+			this.etat = this.etat | DVCTAP_REFUSE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void annuleeParEleve() throws DVCTAPException {
+		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatAccPersModifierProf() && !this.isEtatDureeModifierProf()
+				&& !this.isEtatModifierDateProf()
+				&& !this.isEtatAnnulerEleve()) {
+			this.etat = this.etat | DVCTAP_ANNULE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void modifieeParEleve() throws DVCTAPException {
+		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatAccPersModifierProf() && !this.isEtatDureeModifierProf()
+				&& !this.isEtatModifierDateProf() && !this.isEtatAnnulerEleve()) {
+			this.etat = this.etat | DVCTAP_MODELEVE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void modifieeDateParLeProfesseur() throws DVCTAPException {
+		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
+				&& !this.isEtatValiderProf()) {
+			this.etat = this.etat | DATE_MODIFIEE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void modifieeDureeParLeProfesseur() throws DVCTAPException {
+		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
+				&& !this.isEtatValiderProf()) {
+			this.etat = this.etat | DUREE_MODIFIEE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void modifieeAPParLeProfesseur() throws DVCTAPException {
+		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
+				&& !this.isEtatValiderProf()) {
+			this.etat = this.etat | AP_MODIFIEE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public void rejeteParEleve() throws DVCTAPException {
+		if (!this.isEtatValiderProf()
+				&& !this.isEtatRefuserProf()
+				&& !this.isEtatAccepteEleveApresModif()
+				&& !this.isEtatAnnulerEleve()
+				&& !this.isEtatRefuserProf()
+				&& !this.isEtatValiderProf()
+				&& !this.isEtatRejeterEleveApresModif()
+				&& (this.isEtatAccPersModifierProf() || this.isEtatModifierDateProf() || this
+						.isEtatDureeModifierProf())) {
+			this.etat = this.etat | DVCTAP_REJETEE;
+		}else{
+			throw new DVCTAPException("");
+		}
+	}
+
+
+	public boolean accepteeParEleve() throws DVCTAPException {
+		boolean flag = true;
+		if (!this.isEtatValiderProf()
+				&& !this.isEtatRefuserProf()
+				&& !this.isEtatRejeterEleveApresModif()
+				&& !this.isEtatAnnulerEleve()
+				&& !this.isEtatRefuserProf()
+				&& !this.isEtatValiderProf()
+				&& !this.isEtatAccepteEleveApresModif()
+				&& (this.isEtatAccPersModifierProf() || this.isEtatModifierDateProf() || this
+						.isEtatDureeModifierProf())) {
+			this.etat = this.etat | DVCTAP_ACCEPTERMOFPROF;
+			flag = true;
+		}else{
+			System.out.println("Erreur lors du changement de l'état !");
+			flag =  false;
+		}
+		return flag;
+	}
 }
