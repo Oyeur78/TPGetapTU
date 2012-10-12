@@ -30,21 +30,31 @@ public class DemandeValidationConsoTempsAccPersTest extends TestCase{
 
 	@Test
 	public void testEtatInitial() {
-		System.out.println(dvctap);
 		assertTrue("Etat initial", dvctap.isEtatInitial());
 	}
 	
-	public void testChangeEtat() {
-		try{
-//			dvctap.modifieeParEleve();
-//			dvctap.modifieeParEleve();
-			dvctap.modifieeDateParLeProfesseur();
-			dvctap.modifieeDureeParLeProfesseur();
-			System.out.println(dvctap);
-			dvctap.accepteeParEleve();
-		}catch(DVCTAPException e){
-			fail("Erreur");
-		}
+	public void testEtatDifferents() {
+		dvctap.modifieeParEleve();
+		dvctap.modifieeParEleve();
+		dvctap.modifieeDateParLeProfesseur();
+		dvctap.modifieeDureeParLeProfesseur();
+		dvctap.accepteeParEleve();
+		assertFalse("Accepté par l'élève!", dvctap.accepteeParEleve());
 	}
+	
+	public void testModEleveValidProf() {
+		dvctap.setEtat(0);
+		dvctap.modifieeParEleve();
+		dvctap.valideeParLeProfesseur();
+		assertFalse("Valider par le professeur!", dvctap.valideeParLeProfesseur());
+	}
+	
+	public void testCreRejet(){
+		dvctap.setEtat(0);
+		dvctap.rejeteParEleve();
+		assertFalse("Rejeter par l'élève", dvctap.rejeteParEleve());
+	}
+	
+
 }
 

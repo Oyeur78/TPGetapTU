@@ -254,29 +254,36 @@ public class DemandeValidationConsoTempsAccPers {
 	}
 
 
-	public void valideeParLeProfesseur() throws DVCTAPException {
+	public boolean valideeParLeProfesseur() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatValiderProf()) {
 			this.etat = this.etat | DVCTAP_VALPROF;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("La demande ne peux être valider par le professeur !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void refuseeParLeProfesseur() throws DVCTAPException {
+	public boolean refuseeParLeProfesseur() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatAnnulerEleve() && !this.isEtatValiderProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatRefuserProf()) {
 			this.etat = this.etat | DVCTAP_REFUSE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("Erreur lors du changement de l'état !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void annuleeParEleve() throws DVCTAPException {
+	public boolean annuleeParEleve() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatAccPersModifierProf() && !this.isEtatDureeModifierProf()
@@ -284,60 +291,75 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatAnnulerEleve()) {
 			this.etat = this.etat | DVCTAP_ANNULE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("La demande ne peut être annulé par l'élève !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void modifieeParEleve() throws DVCTAPException {
+	public boolean modifieeParEleve() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatAccPersModifierProf() && !this.isEtatDureeModifierProf()
 				&& !this.isEtatModifierDateProf() && !this.isEtatAnnulerEleve()) {
 			this.etat = this.etat | DVCTAP_MODELEVE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("Erreur lors du changement de l'état !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void modifieeDateParLeProfesseur() throws DVCTAPException {
+	public boolean modifieeDateParLeProfesseur() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
 				&& !this.isEtatValiderProf()) {
 			this.etat = this.etat | DATE_MODIFIEE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("Erreur lors du changement de l'état !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void modifieeDureeParLeProfesseur() throws DVCTAPException {
+	public boolean modifieeDureeParLeProfesseur() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
 				&& !this.isEtatValiderProf()) {
 			this.etat = this.etat | DUREE_MODIFIEE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("Erreur lors du changement de l'état !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void modifieeAPParLeProfesseur() throws DVCTAPException {
+	public boolean modifieeParLeProfesseur() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatValiderProf() && !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif() && !this.isEtatRejeterEleveApresModif()
 				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
 				&& !this.isEtatValiderProf()) {
 			this.etat = this.etat | AP_MODIFIEE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("Erreur lors du changement de l'état !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
-	public void rejeteParEleve() throws DVCTAPException {
+	public boolean rejeteParEleve() throws DVCTAPException {
+		boolean flag = true;
 		if (!this.isEtatValiderProf()
 				&& !this.isEtatRefuserProf()
 				&& !this.isEtatAccepteEleveApresModif()
@@ -349,8 +371,10 @@ public class DemandeValidationConsoTempsAccPers {
 						.isEtatDureeModifierProf())) {
 			this.etat = this.etat | DVCTAP_REJETEE;
 		}else{
-			throw new DVCTAPException("");
+			System.out.println("La demande ne peux être rejeté par le professeur !");
+			flag = false;
 		}
+		return flag;
 	}
 
 
@@ -366,9 +390,8 @@ public class DemandeValidationConsoTempsAccPers {
 				&& (this.isEtatAccPersModifierProf() || this.isEtatModifierDateProf() || this
 						.isEtatDureeModifierProf())) {
 			this.etat = this.etat | DVCTAP_ACCEPTERMOFPROF;
-			flag = true;
 		}else{
-			System.out.println("Erreur lors du changement de l'état !");
+			System.out.println("La demande ne peux être accepté par l'élève !");
 			flag =  false;
 		}
 		return flag;
