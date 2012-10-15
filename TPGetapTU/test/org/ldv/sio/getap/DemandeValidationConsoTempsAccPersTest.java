@@ -18,7 +18,7 @@ public class DemandeValidationConsoTempsAccPersTest extends TestCase{
 		Classe classe = new Classe(1, "SIO22");
 		Discipline discipline = new Discipline(1, "SLAM4");
 		User eleve = new User(1l, "Nizar", "Ben la", classe, "eleve","Nizoo","","nizar@gmail.com");
-		User prof = new User(2l, "Oliver", "Capuzzo", classe, "prof",
+		User prof = new User(2l, "Oliver", "Capuzzo", classe, "profPrincipal",
 				discipline);
 		
 		AccPersonalise accPers = new AccPersonalise(1, "Salon du libre", 0, 1l);
@@ -33,26 +33,42 @@ public class DemandeValidationConsoTempsAccPersTest extends TestCase{
 		assertTrue("Etat initial", dvctap.isEtatInitial());
 	}
 	
-	public void testEtatDifferents() {
+	@Test
+	public void testMultipleEtat() {
 		dvctap.modifieeParEleve();
 		dvctap.modifieeParEleve();
 		dvctap.modifieeDateParLeProfesseur();
 		dvctap.modifieeDureeParLeProfesseur();
 		dvctap.accepteeParEleve();
-		assertFalse("Accepté par l'élève!", dvctap.accepteeParEleve());
+		assertFalse("AcceptÃ© par l'Ã©lÃ¨ve!", dvctap.accepteeParEleve());
 	}
 	
+	@Test
+	public void testModifieeEleve(){
+		dvctap.modifieeParEleve();
+		// dvctap.modifieeDateParLeProfesseur();
+		assertTrue("L'Etat ne peux pas Ãªtre changer",dvctap.getEtat() == 4 );
+	}
+	
+	@Test
 	public void testModEleveValidProf() {
-		dvctap.setEtat(0);
 		dvctap.modifieeParEleve();
 		dvctap.valideeParLeProfesseur();
 		assertFalse("Valider par le professeur!", dvctap.valideeParLeProfesseur());
 	}
 	
-	public void testCreRejet(){
-		dvctap.setEtat(0);
+	@Test
+	public void testModElevePuisAccepterEleve(){
+		dvctap.modifieeDateParLeProfesseur();
+		dvctap.accepteeParEleve();
+		assertFalse("Accepter par l'Ã©lÃ¨ve", dvctap.modifieeParEleve());
+	}
+	
+	@Test
+	public void testValiderProfPuisRefuserEleve(){
+		dvctap.valideeParLeProfesseur();
 		dvctap.rejeteParEleve();
-		assertFalse("Rejeter par l'élève", dvctap.rejeteParEleve());
+		assertFalse("RejetÃ© par l'Ã©lÃ¨ve", dvctap.valideeParLeProfesseur());
 	}
 	
 
