@@ -348,7 +348,7 @@ public class DemandeValidationConsoTempsAccPers {
 		return flag;
 	}
 	/**
-	 * Permet de realiser un masque binaire qui valide ou pas le passage d'un etat a un autre
+	 * Permet de realiser un masque binaire qui valide ou non le passage d'un etat a un autre
 	 * 
 	 * @return un boolean
 	 */
