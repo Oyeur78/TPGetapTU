@@ -213,7 +213,7 @@ public class DemandeValidationConsoTempsAccPers {
 	 * 
 	 */
 	public boolean isEtatInitial() {
-		if (etat == 0) {
+		if (etat == DVCTAP_CREER) {
 			return true;
 		}
 		return false;
@@ -314,6 +314,7 @@ public class DemandeValidationConsoTempsAccPers {
 	 * 
 	 * @return un boolean
 	 */
+
 	public boolean valideeParLeProfesseur() throws DVCTAPException {
 		boolean flag = true;
 		if (!this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()
@@ -323,7 +324,7 @@ public class DemandeValidationConsoTempsAccPers {
 			this.etat = this.etat | DVCTAP_VALPROF;
 		} else {
 			System.out
-					.println("La demande ne peux Ãªtre valider par le professeur !");
+					.println("La demande ne peux être valider par le professeur !");
 			flag = false;
 		}
 		return flag;
@@ -341,7 +342,7 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatRefuserProf()) {
 			this.etat = this.etat | DVCTAP_REFUSE;
 		} else {
-			System.out.println("Erreur lors du changement de l'Ã©tat !");
+			System.out.println("La demande ne peux être refusé par le professeur !");
 			flag = false;
 		}
 		return flag;
@@ -361,7 +362,7 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatModifierDateProf() && !this.isEtatAnnulerEleve()) {
 			this.etat = this.etat | DVCTAP_ANNULE;
 		} else {
-			System.out.println("La demande ne peut Ãªtre annulÃ© par l'Ã©lÃ¨ve !");
+			System.out.println("La demande ne peut être annuler par l'élève !");
 			flag = false;
 		}
 		return flag;
@@ -381,7 +382,7 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatModifierDateProf() && !this.isEtatAnnulerEleve()) {
 			this.etat = this.etat | DVCTAP_MODELEVE;
 		} else {
-			System.out.println("Erreur lors du changement de l'Ã©tat !");
+			System.out.println("La demande ne peux être modifier par l'élève !");
 			flag = false;
 		}
 		return flag;
@@ -399,7 +400,7 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatAnnulerEleve()) {
 			this.etat = this.etat | DVCTAP_DATEMOD;
 		} else {
-			System.out.println("Erreur lors du changement de l'Ã©tat !");
+			System.out.println("La date ne peux être modifié par le professeur !");
 			flag = false;
 		}
 		return flag;
@@ -417,7 +418,7 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatAnnulerEleve()) {
 			this.etat = this.etat | DVCTAP_DUREEMOD;
 		} else {
-			System.out.println("Erreur lors du changement de l'Ã©tat !");
+			System.out.println("La durée ne peux être modifié par le professeur !");
 			flag = false;
 		}
 		return flag;
@@ -435,7 +436,7 @@ public class DemandeValidationConsoTempsAccPers {
 				&& !this.isEtatAnnulerEleve() && !this.isEtatRefuserProf()) {
 			this.etat = this.etat | DVCTAP_ACCPERSMOD;
 		} else {
-			System.out.println("Erreur lors du changement de l'Ã©tat !");
+			System.out.println("La demande ne peux être modifié par le professeur !");
 			flag = false;
 		}
 		return flag;
@@ -458,7 +459,7 @@ public class DemandeValidationConsoTempsAccPers {
 							.isEtatDureeModifierProf())) {
 			this.etat = this.etat | DVCTAP_REJETEE;
 		} else {
-			System.out.println("La demande ne peux Ãªtre rejetÃ© par l'Ã©lÃ¨ve !");
+			System.out.println("La demande ne peux être rejeté par l'élève !");
 			flag = false;
 		}
 		return flag;
@@ -481,7 +482,7 @@ public class DemandeValidationConsoTempsAccPers {
 							.isEtatDureeModifierProf())) {
 			this.etat = this.etat | DVCTAP_ACCEPTERMOFPROF;
 		} else {
-			System.out.println("La demande ne peux Ãªtre acceptÃ© par l'Ã©lÃ¨ve !");
+			System.out.println("La demande ne peux être accepté par l'élève !");
 			flag = false;
 		}
 		return flag;
